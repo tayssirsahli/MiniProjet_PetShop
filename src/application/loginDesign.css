@@ -1,0 +1,55 @@
+.left-form
+{
+		-fx-background-color:linear-gradient(to bottom right,#cd2c77,#322ccc,);
+		-fx-border-color:#000;
+		-fx-border-width:4px 0px .4px .4px;
+		
+}
+
+.right-form
+{
+		-fx-background-color:#fff;
+		-fx-border-color:#000;
+		-fx-border-width:.4px .4px .4px .0px;
+		
+}
+.close{
+		-fx-background-color:transparent;
+		-fx-cursor:hand;
+}
+
+.close:hover{
+	-fx-background-color:#cd2c77;
+		
+}
+
+.textfield{
+	-fx-background-color:#fff;
+	-fx-background-radius:4px;
+	-fx-border-color:#000;
+	-fx-border-width:1px;
+	-fx-border-radius:4px;
+	-fx-font-size:13px;
+	-fx-font-family:"Tahoma";
+	
+}
+
+.textfield:focused{
+	-fx-border-color:linear-gradient(to bottom right,#cd2c77,#322ccc,);
+	-fx-border-width:1.4px;
+	
+	
+}
+.login-btn{
+	-fx-background-color:linear-gradient(to bottom right,#b22ecc,#322ccc,);
+	-fx-background-radius:4px;
+	-fx-cursor:hand;
+	-fx-text-fill:#fff;
+	-fx-font-size:13px;
+	-fx-font-family:"Arial";
+}
+
+.login-btn:hover{
+	-fx-background-color:linear-gradient(to bottom right,#b22ecc,#322ccc,);
+	
+}
