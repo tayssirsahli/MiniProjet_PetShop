@@ -1,5 +1,5 @@
 
-package application;
+package application.controllers;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,13 +7,20 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import connexion.Connexion;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -42,6 +49,8 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private Button closeBtn;
+	
+	
 
 	public void close() {
 		System.exit(0);
@@ -60,7 +69,7 @@ public class DocumentController implements Initializable {
 
 	    	   loginBtn.getScene().getWindow().hide();
 		        
-		        FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
+		        FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/home.fxml"));
 		        BorderPane root = new BorderPane();
 	            loader.setRoot(root);
 		        try {
@@ -122,5 +131,6 @@ public class DocumentController implements Initializable {
 
 	@Override
 	    public void initialize(URL arg0, ResourceBundle arg1) {
+		
 	    }
 }

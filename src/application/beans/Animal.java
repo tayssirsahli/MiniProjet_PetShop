@@ -1,10 +1,12 @@
 package application.beans;
 
+import java.time.LocalDate;
+
 public class Animal extends Article{
 
 	
 	    private String race;
-	    private String dateNaissance;
+	    private LocalDate dateNaissance;
 	   
 
 	    
@@ -13,17 +15,11 @@ public class Animal extends Article{
 	    }
 
 	    
-	    public Animal(int id, String nom, int quantite, int prix, String race, String dateNaissance) {
-	        super(id, nom, quantite, prix);
-	        
-	        this.race = race;
-	        this.dateNaissance = dateNaissance;
-	        
-	    }
+	  
 	    
 
 
-	    public Animal(String nom, int quantite, int prix, String race, String dateNaissance) {
+	    public Animal(String nom, int quantite, Double prix, String race, LocalDate dateNaissance) {
 	        super(nom, quantite, prix);
 	        
 	        this.race = race;
@@ -41,11 +37,11 @@ public class Animal extends Article{
 	        this.race = race;
 	    }
 
-	    public String getDateNaissance() {
+	    public LocalDate getDateNaissance() {
 	        return dateNaissance;
 	    }
 
-	    public void setDateNaissance(String dateNaissance) {
+	    public void setDateNaissance(LocalDate dateNaissance) {
 	        this.dateNaissance = dateNaissance;
 	    }
 
@@ -60,7 +56,26 @@ public class Animal extends Article{
 	             
 	                '}';
 	    }
-	}
+	    
+public Animal(int id, String nom, int quantite, double prix, String race, LocalDate dateNaissance) {
+    super(id, nom, quantite, prix);
+    this.race = race;
+    this.dateNaissance = dateNaissance;
+}
+
+
+
+
+
+
+public Animal(String nom, int quantite, double prix, String race2, LocalDate dateNaissance2) {
+	 super( nom, quantite, prix);
+	    this.race = race2;
+	    this.dateNaissance = dateNaissance2;
+}
+
+
+}
 
 
 

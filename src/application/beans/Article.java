@@ -5,22 +5,31 @@ public class Article {
 	private int id;
     private String nom;
     private int quantite;
-    private int prix;
+    private double prix;
     
     
+	
 	public Article() {
 		super();
 	}
-	public Article(String nom, int quantite, int prix) {
+	public Article(int id, String nom, double prix) {
+		this.id = id;
+		this.nom = nom;
+		this.prix = prix;
+	}
+	public Article(String nom, int quantite, double prix) {
 		this.nom = nom;
 		this.quantite = quantite;
 		this.prix = prix;
 	}
-	public Article(int id, String nom, int quantite, int prix) {
+	public Article(int id, String nom, int quantite, double prix) {
 		this.id = id;
 		this.nom = nom;
 		this.quantite = quantite;
 		this.prix = prix;
+	}
+	public Article(String nom) {
+		this.nom = nom;
 	}
 	public int getId() {
 		return id;
@@ -31,7 +40,7 @@ public class Article {
 	public int getQuantite() {
 		return quantite;
 	}
-	public int getPrix() {
+	public double getPrix() {
 		return prix;
 	}
 	public void setId(int id) {
@@ -43,7 +52,7 @@ public class Article {
 	public void setQuantite(int quantite) {
 		this.quantite = quantite;
 	}
-	public void setPrix(int prix) {
+	public void setPrix(double prix) {
 		this.prix = prix;
 	}
     

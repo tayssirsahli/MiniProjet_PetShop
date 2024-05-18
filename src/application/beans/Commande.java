@@ -1,27 +1,44 @@
 package application.beans;
 
+import java.sql.Date;
+import java.util.Objects;
+
 public class Commande {
     private int id;
-    private int quantite;
+    private Date date;
     private double totale;
-    private String nomClient;
+    private String type;
 
     public Commande() {
     }
 
-    public Commande(int id, int quantite, double totale, String nomClient) {
+  
+
+	public Commande(int id, Date date, double totale, String type) {
         this.id = id;
-        this.quantite = quantite;
+        this.date = date;
         this.totale = totale;
-        this.nomClient = nomClient;
+        this.type = type;
     }
 
-    public Commande(int quantite, double totale, String nomClient) {
+    public Commande(Date date, double totale, String type) {
 		super();
-		this.quantite = quantite;
+		this.date = date;
 		this.totale = totale;
-		this.nomClient = nomClient;
+		this.type = type;
 	}
+
+	public Commande(int id2) {
+		this.id=id2;
+	}
+
+	public Commande(int id, String type, double totale) {
+		this.id = id;
+        this.totale = totale;
+        this.type = type;
+	}
+
+
 
 	public int getId() {
         return id;
@@ -31,12 +48,12 @@ public class Commande {
         this.id = id;
     }
 
-    public int getQuantite() {
-        return quantite;
+    public Date getDate() {
+        return date;
     }
 
-    public void setQuantite(int quantite) {
-        this.quantite = quantite;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public double getTotale() {
@@ -47,21 +64,22 @@ public class Commande {
         this.totale = totale;
     }
 
-    public String getNomClient() {
-        return nomClient;
+    public String getType() {
+        return type;
     }
 
-    public void setNomClient(String nomClient) {
-        this.nomClient = nomClient;
+    public void setType(String type) {
+        this.type = type;
     }
 
+    
     @Override
     public String toString() {
         return "Commande{" +
                 "id=" + id +
-                ", quantite=" + quantite +
+                ", Date=" + date +
                 ", totale=" + totale +
-                ", nomClient='" + nomClient + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

@@ -17,17 +17,15 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("loginDesign.fxml"));
-            StackPane root = new StackPane(); // Create a root node
-            loader.setRoot(root); // Set the root node
             
-            Parent content = loader.load(); // Load the FXML content
             
-            Scene scene = new Scene(content, 600, 430); // Initialize the Scene object
+            Parent content = loader.load();
+            
+            Scene scene = new Scene(content, 600, 430); 
             
             primaryStage.setScene(scene);
             primaryStage.show();
             
-            // Check the connection after the JavaFX application is launched
             if (connexion.Connexion.getConn() != null) {
                 System.out.println("Success: Connected to the database.");
             } else {
@@ -40,5 +38,14 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    
+    public static void checkDatabaseConnection() {
+        if (connexion.Connexion.getConn() != null) {
+            System.out.println("Success: Connected to the database.");
+        } else {
+            System.out.println("Error: Failed to connect to the database.");
+        }
     }
 }

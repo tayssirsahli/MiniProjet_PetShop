@@ -1,30 +1,87 @@
 package application.beans;
 
-public class LigneCommande {
+public class LigneCommande extends Article {
     private int id;
     private int quantite;
     private double prixLigneTotale;
+    private double prix;
     private int produit_id;
     private int commande_id;
 
     public LigneCommande() {
+    	super();
     }
 
-    public LigneCommande(int id, int quantite, double prixLigneTotale, int produit_id, int commande_id) {
-        this.id = id;
-        this.quantite = quantite;
-        this.prixLigneTotale = prixLigneTotale;
-        this.produit_id = produit_id;
-        this.commande_id = commande_id;
-    }
     
     
-    public LigneCommande(int quantite, double prixLigneTotale, int produit_id, int commande_id) {
+
+	public LigneCommande(int quantite, double prixLigneTotale, double prix, int produit_id, int commande_id) {
+		super();
 		this.quantite = quantite;
 		this.prixLigneTotale = prixLigneTotale;
+		this.prix = prix;
 		this.produit_id = produit_id;
 		this.commande_id = commande_id;
 	}
+
+
+
+
+
+
+	public LigneCommande(int id, int quantite, double prixLigneTotale, double prix, int produit_id, int commande_id) {
+		super();
+		this.id = id;
+		this.quantite = quantite;
+		this.prixLigneTotale = prixLigneTotale;
+		this.prix = prix;
+		this.produit_id = produit_id;
+		this.commande_id = commande_id;
+	}
+
+
+
+
+
+
+	public LigneCommande(String selectedName, int quantite, double prixLigneTotale, double prix) {
+		super(selectedName);
+		this.quantite = quantite;
+		this.prixLigneTotale = prixLigneTotale;
+		this.prix = prix;
+	}
+
+
+
+
+	public LigneCommande(int id,String nom, int quantite, double prixLigneTotale, double prix) {
+		super(nom);
+		this.id = id;
+		this.quantite = quantite;
+		this.prixLigneTotale = prixLigneTotale;
+		this.prix = prix;
+		
+	}
+
+
+
+	public double getPrix() {
+		return prix;
+	}
+
+
+
+
+
+
+	public void setPrix(double prix) {
+		this.prix = prix;
+	}
+
+
+
+
+
 
 	public int getId() {
         return id;

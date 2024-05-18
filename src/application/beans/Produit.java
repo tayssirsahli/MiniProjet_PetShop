@@ -3,13 +3,11 @@ package application.beans;
 public class Produit extends Article {
     private int categorie;
 
-    public Produit() {
-        super();
-    }
+    
 
-    public Produit(String nom, int quantite, int prix, Categorie categorie) {
+    public Produit(String nom, int quantite, double prix, int categorie) {
         super(nom, quantite, prix);
-        this.categorie = categorie.getId();
+        this.categorie = categorie;
     }
 
     

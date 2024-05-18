@@ -10,22 +10,29 @@ public class Connexion {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			}
-			catch(ClassNotFoundException ex) {
+		} catch (ClassNotFoundException ex) {
 			System.out.println("Problème de chargement du Driver!");
 			System.exit(1);
-			}
+		}
 		String url = "jdbc:mysql://localhost:3306/petshop";
 		try {
-		 conn = DriverManager.getConnection(url, "root","");
+			conn = DriverManager.getConnection(url, "root", "");
 
-		}
-		catch (SQLException e) {
-		System.err.println("Error opening SQL connection:"+ e.getMessage());
+		} catch (SQLException e) {
+			System.err.println("Error opening SQL connection:" + e.getMessage());
 		}
 	}
+
 	public static Connection getConn() {
+		try {
+			if (conn == null || conn.isClosed()) {
+				String url = "jdbc:mysql://localhost:3306/petshop";
+				conn = DriverManager.getConnection(url, "root", "");
+			}
+		} catch (SQLException e) {
+			System.err.println("Error getting SQL connection: " + e.getMessage());
+		}
 		return conn;
 	}
-	
+
 }
