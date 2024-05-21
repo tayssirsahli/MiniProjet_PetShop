@@ -97,16 +97,30 @@ public class ProductController implements Initializable {
 		PreparedStatement st;
 		Produit nouveauProduit = new Produit(nom, quantite, prix, id);
 
+		String insert="INSERT INTO article ( nom, quantité, prix) VALUES (?, ?, ?)";
 		try {
-			st = Connexion.getConn().prepareStatement("INSERT INTO article ( nom, quantité, prix) VALUES (?, ?, ?)");
+			st = Connexion.getConn().prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
 			st.setString(1, nom);
 			st.setInt(2, quantite);
 			st.setDouble(3, prix);
 
 			int count = st.executeUpdate();
+			if (count == 0) {
+				showAlert(AlertType.ERROR, "Insert Error!", "Failed to insert data into Article table");
+				return;
+			}
+			ResultSet generatedKeys = st.getGeneratedKeys();
+			int articleId;
+			if (generatedKeys.next()) {
+				articleId = generatedKeys.getInt(1);
+			} else {
+				throw new SQLException("Failed to get generated article ID.");
+			}
 
-			st = Connexion.getConn().prepareStatement("INSERT INTO produit (categorie) VALUES (?)");
-			st.setInt(1, id);
+
+			st = Connexion.getConn().prepareStatement("INSERT INTO produit (id,categorie) VALUES (?,?)");
+			st.setInt(1, articleId);
+			st.setInt(2, id);
 			int countP = st.executeUpdate();
 
 			if (count > 0 && countP > 0)
@@ -283,6 +297,8 @@ public class ProductController implements Initializable {
 			e.printStackTrace();
 			showAlert(AlertType.ERROR, "Erreur SQL", "Une erreur s'est produite lors de la mise à jour du produit.");
 		}
+		
+		clearFields();
 	}
 
 	@FXML

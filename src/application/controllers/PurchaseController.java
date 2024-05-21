@@ -84,6 +84,8 @@ public class PurchaseController implements Initializable {
             showAlert(AlertType.ERROR, "Database Error", "Article not found in database.");
             return;
         }
+      
+
 
         double total = article.getPrix() * quantity;
 
@@ -144,7 +146,7 @@ public class PurchaseController implements Initializable {
     }
 
     private Article getArticleByName(String productName) {
-        String query = "SELECT id, prix FROM article WHERE nom = ?";
+        String query = "SELECT id, prix,quantité FROM article WHERE nom = ?";
         try (PreparedStatement pstmt = Connexion.getConn().prepareStatement(query)) {
             pstmt.setString(1, productName);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -181,26 +183,71 @@ public class PurchaseController implements Initializable {
 
     private boolean addOrderLineToDatabase(LigneCommande orderLine) {
         String insertQuery = "INSERT INTO lignecommande (commande_id, produit_id, quantité, prixLigneTotale) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement pstmt = Connexion.getConn().prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setInt(1, orderLine.getCommande_id());
-            pstmt.setInt(2, orderLine.getProduit_id());
-            pstmt.setInt(3, orderLine.getQuantite());
-            pstmt.setDouble(4, orderLine.getPrixLigneTotale());
-            int affectedRows = pstmt.executeUpdate();
+        String updateProductQuery = "UPDATE article SET quantité = quantité - ? WHERE id = ?";
+        Connection conn = null;
 
-            if (affectedRows > 0) {
-                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        orderLine.setId(generatedKeys.getInt(1));
-                        return true;
+        try {
+            conn = Connexion.getConn();
+            conn.setAutoCommit(false); // Désactiver l'auto-commit pour gérer les transactions manuellement
+
+            try (PreparedStatement pstmtInsert = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+                 PreparedStatement pstmtUpdate = conn.prepareStatement(updateProductQuery)) {
+
+                // Insertion de la ligne de commande
+                pstmtInsert.setInt(1, orderLine.getCommande_id());
+                pstmtInsert.setInt(2, orderLine.getProduit_id());
+                pstmtInsert.setInt(3, orderLine.getQuantite());
+                pstmtInsert.setDouble(4, orderLine.getPrixLigneTotale());
+                int affectedRows = pstmtInsert.executeUpdate();
+
+                if (affectedRows > 0) {
+                    try (ResultSet generatedKeys = pstmtInsert.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            orderLine.setId(generatedKeys.getInt(1));
+
+                            // Mise à jour de la quantité du produit
+                            pstmtUpdate.setInt(1, orderLine.getQuantite());
+                            pstmtUpdate.setInt(2, orderLine.getProduit_id());
+                            int updateRows = pstmtUpdate.executeUpdate();
+
+                            if (updateRows > 0) {
+                                // Si tout est réussi, commit la transaction
+                                conn.commit();
+                                return true;
+                            } else {
+                                // Si la mise à jour échoue, rollback la transaction
+                                conn.rollback();
+                            }
+                        }
                     }
                 }
+
+                // Si l'insertion échoue, rollback la transaction
+                conn.rollback();
             }
         } catch (SQLException e) {
             showAlert(AlertType.ERROR, "Database Error", "Error adding order line to database: " + e.getMessage());
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException rollbackEx) {
+                showAlert(AlertType.ERROR, "Database Error", "Error rolling back transaction: " + rollbackEx.getMessage());
+            }
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true); // Réactiver l'auto-commit
+                    conn.close();
+                }
+            } catch (SQLException finalEx) {
+                showAlert(AlertType.ERROR, "Database Error", "Error resetting auto-commit: " + finalEx.getMessage());
+            }
         }
-		return false;
+        return false;
     }
+
+
 
 	/*
 	 * private void clearOrderLines() { String deleteQuery =
@@ -268,7 +315,6 @@ public class PurchaseController implements Initializable {
         try (Statement stmt = Connexion.getConn().createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 names.add(rs.getString("nom"));
-                System.out.println(names);
             }
         } catch (SQLException e) {
             showAlert(AlertType.ERROR, "Database Error", "Error fetching names from database: " + e.getMessage());
@@ -299,15 +345,26 @@ public class PurchaseController implements Initializable {
             return;
         }
 
+        Article article=getArticleByName(ligneSelectionne.getNom());
         int ligneCommandeId = ligneSelectionne.getId();
+        int qte = ligneSelectionne.getQuantite();
+        
+
 
         String deleteLigneQuery = "DELETE FROM lignecommande WHERE id = ?";
-        try (PreparedStatement pstmtDeleteLigne = Connexion.getConn().prepareStatement(deleteLigneQuery)) {
+        String updateArticleQuery = "UPDATE article SET quantité = quantité + ? WHERE id = ?";
+        try (Connection conn = Connexion.getConn();
+             PreparedStatement pstmtDeleteLigne = conn.prepareStatement(deleteLigneQuery);
+             PreparedStatement pstmtUpdateArticle = conn.prepareStatement(updateArticleQuery)) {
+
             pstmtDeleteLigne.setInt(1, ligneCommandeId);
-            System.out.println(ligneCommandeId);
             int rowsAffected = pstmtDeleteLigne.executeUpdate();
 
             if (rowsAffected > 0) {
+                pstmtUpdateArticle.setInt(1, qte);
+                pstmtUpdateArticle.setInt(2, article.getId());
+                pstmtUpdateArticle.executeUpdate();
+
                 list1.remove(ligneSelectionne);
                 tablePur.refresh();
                 showAlert(AlertType.INFORMATION, "Suppression réussie", "La ligne a été supprimée avec succès.");
@@ -320,7 +377,7 @@ public class PurchaseController implements Initializable {
             showAlert(AlertType.ERROR, "Erreur SQL", "Une erreur s'est produite lors de la suppression de la ligne.");
         }
     }
-    
+
 
     ObservableList<LigneCommande> list1 = FXCollections.observableArrayList();
 

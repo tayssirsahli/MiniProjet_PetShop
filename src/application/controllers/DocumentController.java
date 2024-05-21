@@ -65,7 +65,6 @@ public class DocumentController implements Initializable {
 	    } else if (motdepasse.isEmpty()) {
 	        showAlert(AlertType.ERROR, "Form Error!", "Please enter your password");
 	    } else if(authenticate(nom, motdepasse)) {
-		        showAlert(AlertType.INFORMATION, "Authentification successful!", "Welcome " + nom);
 
 	    	   loginBtn.getScene().getWindow().hide();
 		        

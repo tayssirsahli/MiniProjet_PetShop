@@ -16,7 +16,7 @@
             <TextField fx:id="PetName" layoutX="84.0" layoutY="116.0" prefHeight="31.0" prefWidth="118.0" />
             <Label layoutX="17.0" layoutY="179.0" text="Pet raice :" />
             <TextField fx:id="PetRaice" layoutX="89.0" layoutY="174.0" prefHeight="31.0" prefWidth="118.0" />
-            <Label layoutX="12.0" layoutY="231.0" text="Pet Age :" />
+            <Label layoutX="12.0" layoutY="231.0" text="Birth date" />
             <Button fx:id="AddBtn" layoutX="38.0" layoutY="373.0" mnemonicParsing="false" onAction="#AddPet" text="Add" />
             <Button fx:id="UpdateBtn" layoutX="125.0" layoutY="373.0" mnemonicParsing="false" onAction="#UpdatePet" text="Update" />
             <Button fx:id="DeleteBtn" layoutX="31.0" layoutY="429.0" mnemonicParsing="false" onAction="#DeletePet" text="Delete" />
@@ -35,7 +35,7 @@
                <columns>
                   <TableColumn fx:id="TPetName" prefWidth="95.0" text="Pet Name" />
                   <TableColumn fx:id="TPetRace" prefWidth="107.0" text="Pet raice" />
-                  <TableColumn fx:id="TPetAge" prefWidth="97.0" text="Pet age" />
+                  <TableColumn fx:id="TPetAge" prefWidth="97.0" text="Bith date" />
                   <TableColumn fx:id="TPetPrice" prefWidth="78.0" text="Pet price" />
                   <TableColumn fx:id="TPetQauntity" prefWidth="107.0" text="Pet Quantity" />
                </columns>
